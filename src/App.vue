@@ -2,9 +2,9 @@
   <div id="app">
     <div class="container">
       <FormComponent @submit="user" class="mb-5"/>
-      <!-- <div v-if="user > 0"> -->
-        <TableComponent :users="users"/>
-      <!-- </div> -->
+      <div v-if="users.length > 0">
+        <TableComponent :data_user="users" @delete="data"/>
+      </div>
     </div>
   </div>
 </template>
@@ -16,18 +16,20 @@ import TableComponent from './components/TableComponent.vue'
 export default {
   name: 'App',
   components: {
-  FormComponent,
-  TableComponent
+    FormComponent,
+    TableComponent
   },
   data() {
     return {
-      user: [],
       users: [],
     }
   },
   methods: {
-    submit(user){
-      this.users.push(user)
+    user(data) {
+      this.users.push(data)
+    },
+    data(info) {
+      this.users.splice(this.users.indexOf(info), 1)
     }
   },
 }
@@ -36,14 +38,15 @@ export default {
 <style>
 #app {
   background-image: url("./assets/signup-bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
   height: 100vh;
 }
 </style>
