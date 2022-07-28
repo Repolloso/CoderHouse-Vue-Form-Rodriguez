@@ -104,6 +104,8 @@
             this.errors.push('El email es requerido');
           }else if (!emailRegex.test(this.email)) {
             this.errors.push('El email no es valido')
+          } else if (this.email.length > 30) {
+            this.errors.push('El email debe tener como maximo 30 caracteres')
           }
           // ! Password
           if (!this.password) {
