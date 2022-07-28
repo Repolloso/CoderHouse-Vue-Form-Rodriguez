@@ -79,43 +79,56 @@
       }
     },
     methods: {
-      ValidateData () {
-        if (this.name && this.email && this.password && this.country) {
-          this.$emit('submit', {
-            name: this.name,
-            email: this.email,
-            password: this.password,
-            country: this.country
-          })
-        } else {
-          this.errors = []
-          if (!this.name) {
-            this.errors.push('El nombre es requerido')
+        SendData(){
+              this.$emit('submit', {
+                name: this.name,
+                email: this.email,
+                password: this.password,
+                country: this.country
+              })
+          },
+        ValidateData (e) {
+          this.errors = [];
+          let nameRegex = /^[a-zA-Z]{3,}$/;
+          let emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+          // ! Name
+          if(!this.name) {
+            this.errors.push('El nombre es requerido');
+          }else if (!nameRegex.test(this.name)) {
+            this.errors.push('El nombre no es valido')
+          } else if (this.name.length > 8) {
+            this.errors.push('El nombre debe tener como maximo 8 caracteres')
           }
-          if(this.name.length < 3) {
-            this.errors.push('El nombre debe tener al menos 3 caracteres')
-          }
+          // ! Email
           if (!this.email) {
-            this.errors.push('El email es requerido')
-          } 
-          if(!this.email.includes('@')) {
-            this.errors.push('El email debe tener un @')
+            this.errors.push('El email es requerido');
+          }else if (!emailRegex.test(this.email)) {
+            this.errors.push('El email no es valido')
           }
+          // ! Password
           if (!this.password) {
-            this.errors.push('El password es requerido')
+            this.errors.push('El password es requerido');
+          }else if (this.password.length > 10) {
+            this.errors.push('La contraseña debe tener como maximo 10 caracteres')
           }
+          // ! Country
           if (!this.country) {
-            this.errors.push('El país es requerido')
+            this.errors.push('El pais es requerido');
           }
+
+          if (this.errors.length > 0) {
+            e.preventDefault();
+          } else {
+            this.SendData();
+          }
+        },
+        resetForm () {
+          this.name = ''
+          this.email = ''
+          this.password = ''
+          this.country = ''
         }
       },
-      resetForm () {
-        this.name = ''
-        this.email = ''
-        this.password = ''
-        this.country = ''
-      }
-    },
     computed: {
 
     }
